@@ -5,7 +5,7 @@
         "TCP_host": false,
         "connect_to_host": false,
         "host_IP": "127.0.0.1",
-        "bias_tee": true
+        "bias_tee": false
     },
     "DSP": {
         "number_of_fft": 1000,
@@ -23,7 +23,7 @@
         "plot_map": true,
         "y_min": 0.0,
         "y_max": 0.0,
-        "live_view": true
+        "live_view": false
     },
     "observation": {
         "24h": false,

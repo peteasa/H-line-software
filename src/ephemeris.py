@@ -30,10 +30,17 @@ class Coordinates:
     # Returns equatorial coordinates
     def equatorial(self, alt, az):
         horizontal_coord = AltAz(alt = alt*u.degree, az = az*u.degree, pressure = 0*u.bar, obstime = self.TIME,location=self.QTH)
-        eq_coord = SkyCoord(horizontal_coord.transform_to(ICRS()))
+        self.eq_coord = SkyCoord(horizontal_coord.transform_to(ICRS()))
 
-        return round(eq_coord.ra.degree, 2), round(eq_coord.dec.degree, 2)
+        return round(self.eq_coord.ra.degree, 2), round(self.eq_coord.dec.degree, 2)
 
+    # returns the equatorial coordinates in hours, minutes and seconds
+    def equatorialhr(self):
+        ra = self.eq_coord.ra
+        hr = int(ra.hms[0])
+        mi = int(ra.hms[1])
+        sec = int(ra.hms[2])
+        return hr, mi, sec
 
     # Calculates the velocity correction to the observed area with respect to the barycenter for Earth and the Sun
     def barycenterVelocityCorrection(self, ra, dec):

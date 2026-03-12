@@ -58,7 +58,6 @@ def main(config):
         print("Analyzing data...")
         Observation.analyzeData(COORD_CLASS)
         print("Plotting data...")
-        PLOTTING_PARAM['n_plot'] = i
         if Observation.plotData(**PLOTTING_PARAM):
             print(f"Live view finished!")
             break

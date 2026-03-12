@@ -7,15 +7,16 @@ from analysis import Analysis
 ANALYSIS = Analysis()
 
 class Plotter():
-    def __init__(self, plot_map, y_min, y_max, live_view = False, n_plot = 0):
+    def __init__(self, plot_map, y_min, y_max, filetagname, live_view = False):
         self.SHOW_MAP = plot_map
         self.Y_MIN = y_min
         self.Y_MAX = y_max
+        self.filetagname = filetagname
         self.live_view = live_view
-        self.n_plot = n_plot
 
     def plot(self, freqs, data, **kwargs):
         # Unpack info
+        label = kwargs["label"]
         ra, dec = kwargs["ra"], kwargs["dec"]
         gal_lon, gal_lat = kwargs["gal_lon"], kwargs["gal_lat"]
         barycenter_correction = kwargs["barycenter_correction"]
@@ -37,7 +38,7 @@ class Plotter():
 
             self.spectrumGrid(spectrum_ax, 'Observed spectrum', freqs, data)
             self.spectrumGrid(corrected_spectrum_ax, 'Corrected spectrum w.r.t. LSR', np.add(freqs, freq_correction), data)
-            self.skyGrid(sky_ax, ra, dec)
+            self.skyGrid(sky_ax, ra, dec, label)
             self.detailsGrid(details_ax, ra, dec, gal_lon, gal_lat, barycenter_correction, lsr_correction, radial_velocity, SNR)
 
             # Share y-axis for spectrums
@@ -60,7 +61,8 @@ class Plotter():
                 user_closed_window = True
         else:
             # Saves plot
-            path = f'./Spectrums/ra={ra},dec={dec}.png'
+            #path = f'./Spectrums/ra={ra},dec={dec}.png'
+            path = './Spectrums/{}.png'.format(self.filetagname)
             plt.tight_layout(pad = 1.75)
             plt.savefig(path, dpi = 100)
 
@@ -96,7 +98,7 @@ class Plotter():
 
 
     # Arrange sky grid
-    def skyGrid(self, ax, ra, dec):
+    def skyGrid(self, ax, ra, dec, label):
         ax.set(title = 'Milky Way H-line map')
 
         # Huge thanks to the Virgo and Pictor project for sharing their code for the hydrogen line map!
@@ -110,7 +112,7 @@ class Plotter():
         ax.axhline(y = dec, color = 'r', linestyle = ':', linewidth = 1)
 
         # Plot with legend
-        ax.plot(ra, dec, marker = '.', markersize = 15, color = 'r', label = 'LAB HI Survey (Kalberla et al., 2005)')
+        ax.plot(ra, dec, marker = '.', markersize = 15, color = 'r', label = label)
         ax.legend(prop = {'size': 10}, loc = 1)
 
 
@@ -146,8 +148,10 @@ class Plotter():
 
 
     # Generates and saves a GIF of 24H observations
-    def generateGIF(self, ra, dec):
+    #def generateGIF(self, ra, dec):
+    def generateGIF(self, obstime):
         print('Generating GIF from observations... This may take a while')
-        path = f'Spectrums/ra={ra[0]},dec={dec}.gif'
-        images = [imageio.imread(f'Spectrums/ra={coord},dec={dec}.png') for coord in ra]
+        #path = f'Spectrums/ra={ra[0]},dec={dec}.gif'
+        path = 'Spectrums/{}.gif'.format(obstime[0])
+        images = [imageio.imread('Spectrums/{}.png'.format(fn)) for fn in obstime]
         imageio.mimsave(path, images)
