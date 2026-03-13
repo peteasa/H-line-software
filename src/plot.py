@@ -7,12 +7,11 @@ from analysis import Analysis
 ANALYSIS = Analysis()
 
 class Plotter():
-    def __init__(self, plot_map, y_min, y_max, live_view = False, n_plot = 0):
+    def __init__(self, plot_map, y_min, y_max, live_view = False):
         self.SHOW_MAP = plot_map
         self.Y_MIN = y_min
         self.Y_MAX = y_max
         self.live_view = live_view
-        self.n_plot = n_plot
 
     def plot(self, freqs, data, **kwargs):
         # Unpack info

@@ -85,12 +85,9 @@ class Observation:
     # Plot the data
     def plotData(self, **params):
         live_view = False
-        n_plot = params['n_plot']
         if 'live_view' in params:
             live_view = params['live_view']
-        else:
-            n_plot = 0
-        PLOT = Plotter(params["plot_map"], params["y_min"], params["y_max"], live_view, n_plot)
+        PLOT = Plotter(params["plot_map"], params["y_min"], params["y_max"], live_view)
 
         plot_info = {
             "ra": self.RA,
